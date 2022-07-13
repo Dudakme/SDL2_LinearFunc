@@ -1,6 +1,7 @@
 #include <SDL.h>
 #include <cstdio>
 #include <utility>
+#include <cmath>
 using namespace std;
 
 
@@ -17,7 +18,7 @@ int main(int argc, char** argv)
     int n = sizeof a / sizeof a[0];
 
     bool running = true;
-    int x=100;
+
     int m=1;
     int b=1;
     bool isDown = false;
@@ -32,33 +33,36 @@ int main(int argc, char** argv)
                 running = false;
         }
 
-        int y= m*x+b;
 
-        SDL_Delay(100);
+        SDL_Delay(50);
 
         
         SDL_SetRenderDrawColor(renderer, 255, 255, 255, 1);
         SDL_RenderClear(renderer);
 
         SDL_SetRenderDrawColor(renderer, 24, 24, 24, 1);
-        SDL_RenderDrawLine(renderer, x, y, x*height, y*width);
 
+        for (double x = 1; x < 1000;) {
+            double y = m*x+b;
+
+            SDL_RenderDrawPoint(renderer, floor(x), floor(y));
+            printf("%f \n", x);
+            printf("%f \n", y);
+
+            x+=0.2;
+        }
+
+
+        int* pointer = &m;
         
-        
-        
-        if ( m == 4 )   {isDown = true;} else if ( m == 0 ) {  isDown = false; }
+        if ( *pointer == 200 )   {isDown = true;} else if ( *pointer == 1 ) {  isDown = false; }
 
         if (isDown) {
-            m-=1;
+            *pointer-=1;
         } else {
-            m+=1;
+            *pointer+=1;
         }
         
-    
-
-
-
-
         SDL_RenderPresent( renderer );
 
     }
